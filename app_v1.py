@@ -84,7 +84,7 @@ with st.expander("Click to view"):
         )
 
 # Add a section for Diamond Sizes
-st.header("Diamond Sizes (carats)")
+st.header("Diamond Sizes (Carats)")
 
 # Display the image with a caption
 st.image("Diamond_Carat_Weight.png", caption="Comparison of Diamond Sizes (Carats)", use_column_width=True)
@@ -96,41 +96,41 @@ st.header("Filtered Diamonds")
 # Create sliders and filters for user preferences
 mass_range = st.slider(
     "Select Desired Carat Range",
-    min_value=float(df["carat"].min()),
-    max_value=float(df["carat"].max()),
-    value=(float(df["carat"].min()), float(df["carat"].max()))
+    min_value=float(df["Carat"].min()),
+    max_value=float(df["Carat"].max()),
+    value=(float(df["Carat"].min()), float(df["Carat"].max()))
 )
 
 cut_options = st.multiselect(
     "Select Diamond Cuts",
-    options=df["cut"].unique(),
-    default=df["cut"].unique()
+    options=df["Cut"].unique(),
+    default=df["Cut"].unique()
 )
 
 color_options = st.multiselect(
     "Select Diamond Colors",
-    options=df["color"].unique(),
-    default=df["color"].unique()
+    options=df["Color"].unique(),
+    default=df["Color"].unique()
 )
 
 clarity_options = st.multiselect(
     "Select Diamond Clarity Levels",
-    options=df["clarity"].unique(),
-    default=df["clarity"].unique()
+    options=df["Clarity"].unique(),
+    default=df["Clarity"].unique()
 )
 
 # Apply filters to the DataFrame
 filtered_diamonds = df[
-    (df["carat"] >= mass_range[0]) &
-    (df["carat"] <= mass_range[1]) &
-    (df["cut"].isin(cut_options)) &
-    (df["color"].isin(color_options)) &
-    (df["clarity"].isin(clarity_options))
+    (df["Carat"] >= mass_range[0]) &
+    (df["Carat"] <= mass_range[1]) &
+    (df["Cut"].isin(cut_options)) &
+    (df["Color"].isin(color_options)) &
+    (df["Clarity"].isin(clarity_options))
 ]
 
 # Add a multiselect for column selection
 st.subheader("Customize Columns")
-default_columns = ['price', 'carat', 'cut', 'color']  # Default columns to display
+default_columns = ['Price', 'Carat', 'Cut', 'Color']  # Default columns to display
 columns_to_display = st.multiselect(
     "Select Columns to Display:",
     options=filtered_diamonds.columns.tolist(),
@@ -158,8 +158,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error
 
 #### Separating target and features
-X = df.drop(columns=['price', 'table', 'depth'])  # Exclude unnecessary columns
-y = df['price']  # Target variable
+X = df.drop(columns=['Price', 'Table', 'Depth'])  # Exclude unnecessary columns
+y = df['Price']  # Target variable
 
 # Encode categorical variables (if needed)
 categorical_features = X.select_dtypes(include=['object']).columns.tolist()
@@ -198,10 +198,10 @@ st.header("💎 Price Prediction Tool")
 st.subheader("Enter Diamond Features:")
 with st.form("prediction_form"):
     # Input fields for diamond features
-    carat = st.slider("Carat", min_value=float(df["carat"].min()), max_value=float(df["carat"].max()), value=1.0, step=0.01)
-    cut = st.selectbox("Cut", options=df["cut"].unique())
-    color = st.selectbox("Color", options=df["color"].unique())
-    clarity = st.selectbox("Clarity", options=df["clarity"].unique())
+    Carat = st.slider("Carat", min_value=float(df["Carat"].min()), max_value=float(df["Carat"].max()), value=1.0, step=0.01)
+    Cut = st.selectbox("Cut", options=df["Cut"].unique())
+    Color = st.selectbox("Color", options=df["Color"].unique())
+    Clarity = st.selectbox("Clarity", options=df["Clarity"].unique())
 
     # Submit button
     submitted = st.form_submit_button("Predict Price")
@@ -212,10 +212,10 @@ predicted_price = None
 if submitted:
     # Prepare input data for prediction
     input_data = pd.DataFrame({
-        'carat': [carat],
-        'cut': [cut],
-        'color': [color],
-        'clarity': [clarity]
+        'Carat': [Carat],
+        'Cut': [Cut],
+        'Color': [Color],
+        'Clarity': [Clarity]
     })
 
     # Add missing columns with default values
