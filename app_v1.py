@@ -91,21 +91,13 @@ with tab1:
 with tab2:
     st.header("Filtered Diamonds")
 
-    #### Filtering and Preferences Section ####
-    ###########################################
+    # Create two main columns for layout
+    col1, col2 = st.columns([2, 1])  # Left column is twice as wide as the right column
 
-    # Create two columns for sliders
-    col1, col2 = st.columns(2)
+    with col2:  # Filter options on the right
+        st.subheader("Filter Options")
 
-    with col1:
-        mass_range = st.slider(
-            "Select Desired Carat Range",
-            min_value=float(df["Carat"].min()),
-            max_value=float(df["Carat"].max()),
-            value=(float(df["Carat"].min()), float(df["Carat"].max()))
-        )
-
-    with col2:
+        # Slider for price range (now above carat slider)
         price_range = st.slider(
             "Select Desired Price Range",
             min_value=float(df["Price"].min()),
@@ -113,62 +105,64 @@ with tab2:
             value=(float(df["Price"].min()), float(df["Price"].max()))
         )
 
-    # Multiselect options for Cut, Color, and Clarity
-    cut_options = st.multiselect(
-        "Select Diamond Cuts",
-        options=df["Cut"].unique(),
-        default=df["Cut"].unique()
-    )
+        # Slider for carat range
+        mass_range = st.slider(
+            "Select Desired Carat Range",
+            min_value=float(df["Carat"].min()),
+            max_value=float(df["Carat"].max()),
+            value=(float(df["Carat"].min()), float(df["Carat"].max()))
+        )
 
-    color_options = st.multiselect(
-        "Select Diamond Colors",
-        options=df["Color"].unique(),
-        default=df["Color"].unique()
-    )
+        # Multiselect options for Cut, Color, and Clarity
+        cut_options = st.multiselect(
+            "Select Diamond Cuts",
+            options=df["Cut"].unique(),
+            default=df["Cut"].unique()
+        )
 
-    clarity_options = st.multiselect(
-        "Select Diamond Clarity Levels",
-        options=df["Clarity"].unique(),
-        default=df["Clarity"].unique()
-    )
+        color_options = st.multiselect(
+            "Select Diamond Colors",
+            options=df["Color"].unique(),
+            default=df["Color"].unique()
+        )
 
-    # Apply filters to the DataFrame
-    filtered_diamonds = df[
-        (df["Carat"] >= mass_range[0]) &
-        (df["Carat"] <= mass_range[1]) &
-        (df["Price"] >= price_range[0]) &
-        (df["Price"] <= price_range[1]) &
-        (df["Cut"].isin(cut_options)) &
-        (df["Color"].isin(color_options)) &
-        (df["Clarity"].isin(clarity_options))
-    ]
+        clarity_options = st.multiselect(
+            "Select Diamond Clarity Levels",
+            options=df["Clarity"].unique(),
+            default=df["Clarity"].unique()
+        )
 
-    # Add a multiselect for column selection
-    st.subheader("Customize Columns")
-    default_columns = ['Price', 'Carat', 'Cut', 'Color']  # Default columns to display
-    columns_to_display = st.multiselect(
-        "Select Columns to Display:",
-        options=filtered_diamonds.columns.tolist(),
-        default=[col for col in default_columns if col in filtered_diamonds.columns]  # Use default columns if available
-    )
+        # Multiselect for column selection
+        st.subheader("Customize Columns")
+        default_columns = ['Price', 'Carat', 'Cut', 'Color']  # Default columns to display
+        columns_to_display = st.multiselect(
+            "Select Columns to Display:",
+            options=df.columns.tolist(),
+            default=[col for col in default_columns if col in df.columns]  # Use default columns if available
+        )
 
-    # Display filtered results with selected columns
-    st.subheader("Filtered Diamonds")
+    with col1:  # Filtered data on the left
+        st.subheader("Filtered Diamonds")
 
-    num_results = len(filtered_diamonds)
-    st.markdown(f"**{num_results} results**")
+        # Apply filters to the DataFrame
+        filtered_diamonds = df[
+            (df["Price"] >= price_range[0]) &
+            (df["Price"] <= price_range[1]) &
+            (df["Carat"] >= mass_range[0]) &
+            (df["Carat"] <= mass_range[1]) &
+            (df["Cut"].isin(cut_options)) &
+            (df["Color"].isin(color_options)) &
+            (df["Clarity"].isin(clarity_options))
+        ]
 
-    if filtered_diamonds.empty:
-        st.warning("No diamonds match your selected criteria. Please adjust the filters.")
-    else:
-        # Display the filtered DataFrame with selected columns
-        st.dataframe(filtered_diamonds[columns_to_display].reset_index(drop=True))  # Reset index and drop the original one
+        num_results = len(filtered_diamonds)
+        st.markdown(f"**{num_results} results**")
 
-    if not filtered_diamonds.empty:
-        st.subheader("Summary Statistics")
-        avg_price = filtered_diamonds["Price"].mean()
-        avg_carat = filtered_diamonds["Carat"].mean()
-        st.write(f"**Average Price:** ${avg_price:,.2f}")
+        if filtered_diamonds.empty:
+            st.warning("No diamonds match your selected criteria. Please adjust the filters.")
+        else:
+            # Display the filtered DataFrame with selected columns
+            st.dataframe(filtered_diamonds[columns_to_display].reset_index(drop=True))  # Reset index and drop the original one
 
 #### MODEL
 ###########################################
