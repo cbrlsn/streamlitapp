@@ -41,9 +41,9 @@ def load_data():
 
 df = load_data()
 
-#### Diamond Color Showcase Section ####
+#### Diamond Color Guide Section ####
 #########################################
-st.header("Diamond Color Showcase")
+st.header("Diamond Color Guide")
 
 # Add an expander for collapsible content
 with st.expander("Click to view"):
