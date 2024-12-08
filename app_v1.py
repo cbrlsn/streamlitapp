@@ -247,12 +247,13 @@ with tab3:
         )
 
 with tab4:
-    # Scatter plot: Carat vs. Price
-    st.header("💎 Carat vs. Price")
-
-    fig, ax = plt.subplots()
-    sns.scatterplot(data=filtered_diamonds, x="Carat", y="Price", hue="Color", palette="viridis", ax=ax)
-    ax.set_title("Carat vs. Price", fontsize=16)
-    ax.set_xlabel("Carat", fontsize=12)
-    ax.set_ylabel("Price ($)", fontsize=12)
-    st.pyplot(fig)
+    st.header("💎 Pricing Relationships")
+    if 'filtered_diamonds' in locals() and not filtered_diamonds.empty:
+        fig, ax = plt.subplots()
+        sns.scatterplot(data=filtered_diamonds, x="Carat", y="Price", hue="Color", palette="viridis", ax=ax)
+        ax.set_title("Carat vs. Price", fontsize=16)
+        ax.set_xlabel("Carat", fontsize=12)
+        ax.set_ylabel("Price ($)", fontsize=12)
+        st.pyplot(fig)
+    else:
+        st.warning("No data available for the selected filters.")
