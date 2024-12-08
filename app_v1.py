@@ -42,7 +42,7 @@ def load_data():
 
 df = load_data()
 
-tab1, tab2, tab3 = st.tabs(["Diamond Guide", "Filtered Diamonds", "Price Prediction"])
+tab1, tab2, tab3, tab4 = st.tabs(["Diamond Guide", "Filtered Diamonds", "Price Prediction, Pricing Relationships"])
 
 with tab1:
     st.header("Diamond Color Guide")
@@ -245,3 +245,14 @@ with tab3:
             """,
             unsafe_allow_html=True
         )
+
+with tab4:
+    # Scatter plot: Carat vs. Price
+    st.header("💎 Carat vs. Price")
+
+    fig, ax = plt.subplots()
+    sns.scatterplot(data=filtered_diamonds, x="Carat", y="Price", hue="Color", palette="viridis", ax=ax)
+    ax.set_title("Carat vs. Price", fontsize=16)
+    ax.set_xlabel("Carat", fontsize=12)
+    ax.set_ylabel("Price ($)", fontsize=12)
+    st.pyplot(fig)
