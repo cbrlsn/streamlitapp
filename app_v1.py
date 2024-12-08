@@ -238,16 +238,16 @@ with tab3:
 
         # Display Prediction
         if submitted:
-    # Display Prediction in a styled card
-    st.markdown(
-        f"""
-        <div style="background-color: #0074cc; padding: 20px; border-radius: 10px; text-align: center; margin-top: 20px;">
-            <h2 style="color: #ffffff;">Estimated Price</h2>
-            <h1 style="color: #ffffff;">${predicted_price:,.2f}</h1>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+            # Display Prediction in a styled card
+            st.markdown(
+                f"""
+                <div style="background-color: #0074cc; padding: 20px; border-radius: 10px; text-align: center; margin-top: 20px;">
+                    <h2 style="color: #ffffff;">Estimated Price</h2>
+                    <h1 style="color: #ffffff;">${predicted_price:,.2f}</h1>
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
 
 with tab4:
     st.header("Pricing Relationships")
