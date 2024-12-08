@@ -191,6 +191,9 @@ rmse = mse ** 0.5
 print(f"Mean Squared Error: {mse}")
 print(f"Root Mean Squared Error: {rmse}")
 
+with tab3:
+    st.header("💎 Price Prediction Tool")
+
 #### Price Prediction Section ####
 ###########################################
 st.header("💎 Price Prediction Tool")
