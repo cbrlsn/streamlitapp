@@ -92,9 +92,9 @@ with tab2:
     st.header("Filtered Diamonds")
 
     # Create two main columns for layout
-    col1, col2 = st.columns([2, 1])  # Left column is twice as wide as the right column
+    col1, col2 = st.columns([1, 1])  # Left column is twice as wide as the right column
 
-    with col2:  # Filter options on the right
+    with col1:  # Filter options on the right
         st.subheader("Filter Options")
 
         # Slider for price range (now above carat slider)
@@ -141,7 +141,7 @@ with tab2:
             default=[col for col in default_columns if col in df.columns]  # Use default columns if available
         )
 
-    with col1:  # Filtered data on the left
+    with col2:  # Filtered data on the left
         st.subheader("Filtered Diamonds")
 
         # Apply filters to the DataFrame
