@@ -128,14 +128,14 @@ filtered_diamonds = df[
 
 # Add a multiselect for column selection
 st.subheader("Customize Columns")
+default_columns = ['price', 'carat', 'cut', 'color']  # Default columns to display
 columns_to_display = st.multiselect(
     "Select Columns to Display:",
     options=filtered_diamonds.columns.tolist(),
-    default=filtered_diamonds.columns.tolist()  # Default to all columns
+    default=[col for col in default_columns if col in filtered_diamonds.columns]  # Use default columns if available
 )
 
 # Display filtered results with selected columns
-
 st.subheader("Filtered Diamonds")
 
 num_results = len(filtered_diamonds)
