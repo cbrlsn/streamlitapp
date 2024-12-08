@@ -34,8 +34,11 @@ st.markdown("By Clemens Burleson & Aksh Iyer from the University of St. Gallen u
 ###########################################
 @st.cache_data()
 def load_data():
+    # Load the data and rename columns to have capitalized first letters
     df = pd.read_csv("diamonds.csv")
-    return(df.dropna())
+    df.columns = df.columns.str.capitalize()  # Capitalize all column titles
+    return df.dropna()
+
 df = load_data()
 
 #### Diamond Color Showcase Section ####
