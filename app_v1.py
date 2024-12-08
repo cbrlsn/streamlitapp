@@ -147,6 +147,11 @@ with tab2:
         # Display the filtered DataFrame with selected columns
         st.dataframe(filtered_diamonds[columns_to_display].reset_index(drop=True))  # Reset index and drop the original one
 
+if not filtered_diamonds.empty:
+    st.subheader("Summary Statistics")
+    avg_price = filtered_diamonds["Price"].mean()
+    avg_carat = filtered_diamonds["Carat"].mean()
+    st.write(f"**Average Price:** ${avg_price:,.2f}")
 
 #### MODEL
 ###########################################
