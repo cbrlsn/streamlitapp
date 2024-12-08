@@ -45,7 +45,6 @@ tab1, tab2, tab3 = st.tabs(["Diamond Guide", "Filtered Diamonds", "Price Predict
 
 with tab1:
     st.header("Diamond Color Guide")
-    with st.expander("Click to view"):
         # Dictionary to map diamond colors to visual representations
         color_descriptions = {
             "D": "Completely colorless, the highest grade of diamond color.",
@@ -82,74 +81,74 @@ with tab1:
                 unsafe_allow_html=True
             )
 
-# Add a section for Diamond Sizes
-st.header("Diamond Sizes (Carats)")
+    # Add a section for Diamond Sizes
+    st.header("Diamond Sizes (Carats)")
 
-# Display the image with a caption
-st.image("Diamond_Carat_Weight.png", caption="Comparison of Diamond Sizes (Carats)", use_column_width=True)
+    # Display the image with a caption
+    st.image("Diamond_Carat_Weight.png", caption="Comparison of Diamond Sizes (Carats)", use_column_width=True)
 
 with tab2:
     st.header("Filtered Diamonds")
 
-#### Filtering and Preferences Section ####
-###########################################
-st.header("Filtered Diamonds")
+    #### Filtering and Preferences Section ####
+    ###########################################
+    st.header("Filtered Diamonds")
 
-# Create sliders and filters for user preferences
-mass_range = st.slider(
-    "Select Desired Carat Range",
-    min_value=float(df["Carat"].min()),
-    max_value=float(df["Carat"].max()),
-    value=(float(df["Carat"].min()), float(df["Carat"].max()))
-)
+    # Create sliders and filters for user preferences
+    mass_range = st.slider(
+        "Select Desired Carat Range",
+        min_value=float(df["Carat"].min()),
+        max_value=float(df["Carat"].max()),
+        value=(float(df["Carat"].min()), float(df["Carat"].max()))
+    )
 
-cut_options = st.multiselect(
-    "Select Diamond Cuts",
-    options=df["Cut"].unique(),
-    default=df["Cut"].unique()
-)
+    cut_options = st.multiselect(
+        "Select Diamond Cuts",
+        options=df["Cut"].unique(),
+        default=df["Cut"].unique()
+    )
 
-color_options = st.multiselect(
-    "Select Diamond Colors",
-    options=df["Color"].unique(),
-    default=df["Color"].unique()
-)
+    color_options = st.multiselect(
+        "Select Diamond Colors",
+        options=df["Color"].unique(),
+        default=df["Color"].unique()
+    )
 
-clarity_options = st.multiselect(
-    "Select Diamond Clarity Levels",
-    options=df["Clarity"].unique(),
-    default=df["Clarity"].unique()
-)
+    clarity_options = st.multiselect(
+        "Select Diamond Clarity Levels",
+        options=df["Clarity"].unique(),
+        default=df["Clarity"].unique()
+    )
 
-# Apply filters to the DataFrame
-filtered_diamonds = df[
-    (df["Carat"] >= mass_range[0]) &
-    (df["Carat"] <= mass_range[1]) &
-    (df["Cut"].isin(cut_options)) &
-    (df["Color"].isin(color_options)) &
-    (df["Clarity"].isin(clarity_options))
-]
+    # Apply filters to the DataFrame
+    filtered_diamonds = df[
+        (df["Carat"] >= mass_range[0]) &
+        (df["Carat"] <= mass_range[1]) &
+        (df["Cut"].isin(cut_options)) &
+        (df["Color"].isin(color_options)) &
+        (df["Clarity"].isin(clarity_options))
+    ]
 
-# Add a multiselect for column selection
-st.subheader("Customize Columns")
-default_columns = ['Price', 'Carat', 'Cut', 'Color']  # Default columns to display
-columns_to_display = st.multiselect(
-    "Select Columns to Display:",
-    options=filtered_diamonds.columns.tolist(),
-    default=[col for col in default_columns if col in filtered_diamonds.columns]  # Use default columns if available
-)
+    # Add a multiselect for column selection
+    st.subheader("Customize Columns")
+    default_columns = ['Price', 'Carat', 'Cut', 'Color']  # Default columns to display
+    columns_to_display = st.multiselect(
+        "Select Columns to Display:",
+        options=filtered_diamonds.columns.tolist(),
+        default=[col for col in default_columns if col in filtered_diamonds.columns]  # Use default columns if available
+    )
 
-# Display filtered results with selected columns
-st.subheader("Filtered Diamonds")
+    # Display filtered results with selected columns
+    st.subheader("Filtered Diamonds")
 
-num_results = len(filtered_diamonds)
-st.markdown(f"**{num_results} results**")
+    num_results = len(filtered_diamonds)
+    st.markdown(f"**{num_results} results**")
 
-if filtered_diamonds.empty:
-    st.warning("No diamonds match your selected criteria. Please adjust the filters.")
-else:
-    # Display the filtered DataFrame with selected columns
-    st.dataframe(filtered_diamonds[columns_to_display].reset_index(drop=True))  # Reset index and drop the original one
+    if filtered_diamonds.empty:
+        st.warning("No diamonds match your selected criteria. Please adjust the filters.")
+    else:
+        # Display the filtered DataFrame with selected columns
+        st.dataframe(filtered_diamonds[columns_to_display].reset_index(drop=True))  # Reset index and drop the original one
 
 
 
