@@ -193,10 +193,6 @@ print(f"Root Mean Squared Error: {rmse}")
 with tab3:
     st.header("💎 Price Prediction Tool")
 
-    #### Price Prediction Section ####
-    ###########################################
-    st.header("💎 Price Prediction Tool")
-
     # User Inputs for Prediction
     st.subheader("Enter Diamond Features:")
     with st.form("prediction_form"):
