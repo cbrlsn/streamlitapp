@@ -41,47 +41,46 @@ def load_data():
 
 df = load_data()
 
-#### Diamond Color Guide Section ####
-#########################################
-st.header("Diamond Color Guide")
+tab1, tab2, tab3 = st.tabs(["Diamond Guide", "Filtered Diamonds", "Price Prediction"])
 
-# Add an expander for collapsible content
-with st.expander("Click to view"):
-    # Dictionary to map diamond colors to visual representations
-    color_descriptions = {
-        "D": "Completely colorless, the highest grade of diamond color.",
-        "E": "Exceptional white, minute traces of color detectable.",
-        "F": "Excellent white, slight color detectable only by experts.",
-        "G": "Near colorless, slight warmth noticeable.",
-        "H": "Near colorless, slightly more warmth.",
-        "I": "Noticeable warmth, light yellow tint visible.",
-        "J": "Very noticeable warmth, visible yellow tint.",
-    }
+with tab1:
+    st.header("Diamond Color Guide")
+    with st.expander("Click to view"):
+        # Dictionary to map diamond colors to visual representations
+        color_descriptions = {
+            "D": "Completely colorless, the highest grade of diamond color.",
+            "E": "Exceptional white, minute traces of color detectable.",
+            "F": "Excellent white, slight color detectable only by experts.",
+            "G": "Near colorless, slight warmth noticeable.",
+            "H": "Near colorless, slightly more warmth.",
+            "I": "Noticeable warmth, light yellow tint visible.",
+            "J": "Very noticeable warmth, visible yellow tint.",
+        }
 
-    # Create colored boxes to represent diamond colors
-    diamond_color_boxes = {
-        "D": "#fdfdfd",  # White
-        "E": "#f8f8f8",  # Slightly off-white
-        "F": "#f0f0f0",  # Slight gray
-        "G": "#e8e8e8",  # Light gray
-        "H": "#e0d4b8",  # Slight yellow
-        "I": "#d4b892",  # Yellow tint
-        "J": "#ccb78e",  # Warm yellow
-    }
+        # Create colored boxes to represent diamond colors
+        diamond_color_boxes = {
+            "D": "#fdfdfd",  # White
+            "E": "#f8f8f8",  # Slightly off-white
+            "F": "#f0f0f0",  # Slight gray
+            "G": "#e8e8e8",  # Light gray
+            "H": "#e0d4b8",  # Slight yellow
+            "I": "#d4b892",  # Yellow tint
+            "J": "#ccb78e",  # Warm yellow
+        }
 
-    # Display diamond colors with descriptions
-    for color, hex_code in diamond_color_boxes.items():
-        st.markdown(
-            f"""
-            <div style="display: flex; align-items: center; margin-bottom: 15px;">
-                <div style="width: 50px; height: 50px; background-color: {hex_code}; border: 1px solid black; margin-right: 15px;"></div>
-                <div>
-                    <strong>Color {color}:</strong> {color_descriptions[color]}
+        # Display diamond colors with descriptions
+        for color, hex_code in diamond_color_boxes.items():
+            st.markdown(
+                f"""
+                <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                    <div style="width: 50px; height: 50px; background-color: {hex_code}; border: 1px solid black; margin-right: 15px;"></div>
+                    <div>
+                        <strong>Color {color}:</strong> {color_descriptions[color]}
+                    </div>
                 </div>
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
+                """,
+                unsafe_allow_html=True
+            )
 
 # Add a section for Diamond Sizes
 st.header("Diamond Sizes (Carats)")
