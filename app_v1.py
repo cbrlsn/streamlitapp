@@ -28,6 +28,7 @@ This Diamond Brothers app uses advanced machine learning techniques to predict d
 Customize your preferences, view the filtered data, and understand market trends to make informed pricing decisions!
 """)
 
+st.markdown("By Clemens Burleson & Aksh Iyer from the University of St. Gallen under the instruction of Prof. Dr. Ivo Blohm")
 
 #### Define Load functions and load data
 ###########################################
@@ -36,8 +37,6 @@ def load_data():
     df = pd.read_csv("diamonds.csv")
     return(df.dropna())
 df = load_data()
-
-st.markdown("By Clemens Burleson & Aksh Iyer from the University of St. Gallen under the instruction of Prof. Dr. Ivo Blohm")
 
 #### Diamond Color Showcase Section ####
 #########################################
