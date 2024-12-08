@@ -232,6 +232,12 @@ with tab3:
         # Predict using the trained model
         predicted_price = model.predict(input_data)[0]
 
+       if submitted:
+    with st.spinner("Calculating the price..."):
+        # Perform prediction logic here
+        predicted_price = model.predict(input_data)[0]
+
+
         # Display Prediction
         st.markdown(
             f"""
