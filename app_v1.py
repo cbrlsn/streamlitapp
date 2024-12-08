@@ -186,6 +186,8 @@ rmse = mse ** 0.5
 print(f"Mean Squared Error: {mse}")
 print(f"Root Mean Squared Error: {rmse}")
 
+import time  # Add this import at the top of your script
+
 with tab3:
     st.header("Price Prediction Tool")
 
@@ -228,11 +230,11 @@ with tab3:
         # Preprocess categorical variables
         for col in input_data.select_dtypes(include='object').columns:
             input_data[col] = input_data[col].astype('category').cat.codes
-            
+
         # Predict using the trained model with a spinner
         with st.spinner("Calculating the price..."):
+            time.sleep(1.5)  # Artificial delay to ensure spinner is visible
             predicted_price = model.predict(input_data)[0]
-
 
         # Display Prediction
         st.markdown(
