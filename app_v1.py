@@ -92,9 +92,9 @@ with tab2:
     st.header("Filtered Diamonds")
 
     # Create two main columns for layout
-    col1, col2 = st.columns([1, 1])  # Left column is twice as wide as the right column
+    col1, col2 = st.columns([1, 1])  # Equal-width columns for filter options and filtered data
 
-    with col1:  # Filter options on the right
+    with col1:  # Filter options on the left
         st.subheader("Filter Options")
 
         # Slider for price range (now above carat slider)
@@ -141,7 +141,7 @@ with tab2:
             default=[col for col in default_columns if col in df.columns]  # Use default columns if available
         )
 
-    with col2:  # Filtered data on the left
+    with col2:  # Filtered data on the right
         st.subheader("Filtered Diamonds")
 
         # Apply filters to the DataFrame
@@ -161,8 +161,21 @@ with tab2:
         if filtered_diamonds.empty:
             st.warning("No diamonds match your selected criteria. Please adjust the filters.")
         else:
+            # Center the filtered data in column 2
+            st.markdown(
+                """
+                <div style="display: flex; justify-content: center; margin-top: 20px;">
+                """,
+                unsafe_allow_html=True
+            )
             # Display the filtered DataFrame with selected columns
             st.dataframe(filtered_diamonds[columns_to_display].reset_index(drop=True))  # Reset index and drop the original one
+            st.markdown(
+                """
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
 
 #### MODEL
 ###########################################
