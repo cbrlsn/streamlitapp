@@ -241,7 +241,7 @@ with tab3:
             # Display Prediction in a styled card
             st.markdown(
                 f"""
-                <div style="background-color: #0074cc; padding: 20px; border-radius: 10px; text-align: center; margin-top: 20px;">
+                <div style="background-color: #739BD0; padding: 20px; border-radius: 10px; text-align: center; margin-top: 20px;">
                     <h2 style="color: #ffffff;">Estimated Price</h2>
                     <h1 style="color: #ffffff;">${predicted_price:,.2f}</h1>
                 </div>
