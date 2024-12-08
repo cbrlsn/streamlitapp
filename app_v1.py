@@ -161,10 +161,11 @@ with tab2:
         if filtered_diamonds.empty:
             st.warning("No diamonds match your selected criteria. Please adjust the filters.")
         else:
-            # Center the filtered data in column 2
+            # Center the filtered data horizontally
             st.markdown(
                 """
-                <div style="display: flex; justify-content: center; margin-top: 20px;">
+                <div style="display: flex; justify-content: center; width: 100%; margin-top: 20px;">
+                    <div style="width: 70%; max-width: 800px;">
                 """,
                 unsafe_allow_html=True
             )
@@ -172,6 +173,7 @@ with tab2:
             st.dataframe(filtered_diamonds[columns_to_display].reset_index(drop=True))  # Reset index and drop the original one
             st.markdown(
                 """
+                    </div>
                 </div>
                 """,
                 unsafe_allow_html=True
