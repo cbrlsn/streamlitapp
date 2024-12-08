@@ -25,7 +25,7 @@ st.markdown(
 st.sidebar.header("Welcome!")
 st.sidebar.write("""
 This Diamond Brothers app uses advanced machine learning techniques to predict diamond prices based on attributes such as carat, cut, clarity, and color. 
-Customize your preferences, view the filtered data, and understand market trends to make informed pricing decisions!
+Customize your preferences, and view the filtered data, to make informed pricing decisions!
 """)
 
 st.markdown("By Clemens Burleson & Aksh Iyer from the University of St. Gallen under the instruction of Prof. Dr. Ivo Blohm")
