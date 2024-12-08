@@ -130,6 +130,15 @@ with tab2:
         (df["Clarity"].isin(clarity_options))
     ]
 
+    # Style DataFrame for better visuals
+if not filtered_diamonds.empty:
+    st.dataframe(
+        filtered_diamonds[columns_to_display]
+        .reset_index(drop=True)
+        .style.background_gradient(cmap="Blues")
+        .format({"Price": "${:,.2f}"})
+    )
+
     # Add a multiselect for column selection
     st.subheader("Customize Columns")
     default_columns = ['Price', 'Carat', 'Cut', 'Color']  # Default columns to display
