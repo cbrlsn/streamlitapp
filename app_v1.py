@@ -91,14 +91,29 @@ with tab1:
 with tab2:
     st.header("Filtered Diamonds")
 
-    # Create sliders and filters for user preferences
-    mass_range = st.slider(
-        "Select Desired Carat Range",
-        min_value=float(df["Carat"].min()),
-        max_value=float(df["Carat"].max()),
-        value=(float(df["Carat"].min()), float(df["Carat"].max()))
-    )
+    #### Filtering and Preferences Section ####
+    ###########################################
 
+    # Create two columns for sliders
+    col1, col2 = st.columns(2)
+
+    with col1:
+        mass_range = st.slider(
+            "Select Desired Carat Range",
+            min_value=float(df["Carat"].min()),
+            max_value=float(df["Carat"].max()),
+            value=(float(df["Carat"].min()), float(df["Carat"].max()))
+        )
+
+    with col2:
+        price_range = st.slider(
+            "Select Desired Price Range",
+            min_value=float(df["Price"].min()),
+            max_value=float(df["Price"].max()),
+            value=(float(df["Price"].min()), float(df["Price"].max()))
+        )
+
+    # Multiselect options for Cut, Color, and Clarity
     cut_options = st.multiselect(
         "Select Diamond Cuts",
         options=df["Cut"].unique(),
@@ -121,6 +136,8 @@ with tab2:
     filtered_diamonds = df[
         (df["Carat"] >= mass_range[0]) &
         (df["Carat"] <= mass_range[1]) &
+        (df["Price"] >= price_range[0]) &
+        (df["Price"] <= price_range[1]) &
         (df["Cut"].isin(cut_options)) &
         (df["Color"].isin(color_options)) &
         (df["Clarity"].isin(clarity_options))
