@@ -88,6 +88,9 @@ st.header("Diamond Sizes (Carats)")
 # Display the image with a caption
 st.image("Diamond_Carat_Weight.png", caption="Comparison of Diamond Sizes (Carats)", use_column_width=True)
 
+with tab2:
+    st.header("Filtered Diamonds")
+
 #### Filtering and Preferences Section ####
 ###########################################
 st.header("Filtered Diamonds")
