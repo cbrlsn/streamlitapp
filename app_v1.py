@@ -37,7 +37,7 @@ def load_data():
     return(df.dropna())
 df = load_data()
 
-st.markdown("A WIP created by Clemens Burleson & Aksh Iyer")
+st.markdown("By Clemens Burleson & Aksh Iyer from the University of St. Gallen under the instruction of Prof. Dr. Ivo Blohm")
 
 #### Diamond Color Showcase Section ####
 #########################################
