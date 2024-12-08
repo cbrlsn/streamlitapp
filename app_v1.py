@@ -233,7 +233,7 @@ with tab3:
 
         # Predict using the trained model with a spinner
         with st.spinner("Calculating the price..."):
-            time.sleep(1.5)  # Artificial delay to ensure spinner is visible
+            time.sleep(0.5)  # Artificial delay to ensure spinner is visible
             predicted_price = model.predict(input_data)[0]
 
         # Display Prediction
