@@ -91,10 +91,6 @@ with tab1:
 with tab2:
     st.header("Filtered Diamonds")
 
-    #### Filtering and Preferences Section ####
-    ###########################################
-    st.header("Filtered Diamonds")
-
     # Create sliders and filters for user preferences
     mass_range = st.slider(
         "Select Desired Carat Range",
@@ -191,7 +187,7 @@ print(f"Mean Squared Error: {mse}")
 print(f"Root Mean Squared Error: {rmse}")
 
 with tab3:
-    st.header("💎 Price Prediction Tool")
+    st.header("Price Prediction Tool")
 
     # User Inputs for Prediction
     st.subheader("Enter Diamond Features:")
@@ -247,7 +243,7 @@ with tab3:
         )
 
 with tab4:
-    st.header("💎 Pricing Relationships")
+    st.header("Pricing Relationships")
     if 'filtered_diamonds' in locals() and not filtered_diamonds.empty:
         fig, ax = plt.subplots()
         sns.scatterplot(data=filtered_diamonds, x="Carat", y="Price", hue="Color", palette="viridis", ax=ax)
