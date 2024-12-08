@@ -42,7 +42,7 @@ def load_data():
 
 df = load_data()
 
-tab1, tab2, tab3, tab4 = st.tabs(["Diamond Guide", "Filtered Diamonds", "Price Prediction, Pricing Relationships"])
+tab1, tab2, tab3, tab4 = st.tabs(["Diamond Guide", "Filtered Diamonds", "Price Prediction", "Pricing Relationships"])
 
 with tab1:
     st.header("Diamond Color Guide")
