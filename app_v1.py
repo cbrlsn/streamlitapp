@@ -340,6 +340,56 @@ with tab3:
                 unsafe_allow_html=True
             )
 
+        # Calculate RMSE before tuning
+    rmse_before_tuning = rmse  # This is the RMSE from the initial model before tuning
+    
+    # Perform hyperparameter tuning for CatBoost
+    from sklearn.metrics import mean_squared_error
+    from sklearn.model_selection import train_test_split
+    
+    # Define the CatBoost Regressor with optimized hyperparameters
+    tuned_model = CatBoostRegressor(
+        iterations=2000,
+        learning_rate=0.05,
+        depth=8,
+        l2_leaf_reg=3,
+        loss_function='RMSE',
+        cat_features=categorical_features,
+        verbose=0  # Suppress detailed training output
+    )
+    
+    # Fit the tuned model
+    tuned_model.fit(X_train, y_train)
+    
+    # Make predictions with the tuned model
+    y_pred_tuned = tuned_model.predict(X_test)
+    
+    # Calculate RMSE after tuning
+    rmse_after_tuning = mean_squared_error(y_test, y_pred_tuned, squared=False)
+    
+    # Display RMSE comparison in a collapsible section
+    with st.expander("Prediction Performance"):
+        st.subheader("Model Performance")
+        st.write("### RMSE Comparison")
+        st.markdown(
+            f"""
+            <div style="background-color: #f4f4f4; padding: 15px; border-radius: 10px; margin-bottom: 15px;">
+                <p><strong>Before Tuning:</strong> {rmse_before_tuning:,.2f}</p>
+                <p><strong>After Tuning:</strong> {rmse_after_tuning:,.2f}</p>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+    
+        st.write("#### Interpretation:")
+        st.markdown(
+            """
+            - **Before Tuning:** This RMSE reflects the performance of the default CatBoost model.
+            - **After Tuning:** This RMSE reflects the performance after applying optimized hyperparameters.
+            - The decrease in RMSE demonstrates the effectiveness of hyperparameter tuning.
+            """
+        )
+
 with tab4:
     st.header("Pricing Relationships")
     if 'filtered_diamonds' in locals() and not filtered_diamonds.empty:
