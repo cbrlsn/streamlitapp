@@ -198,38 +198,67 @@ with tab2:
 
 #### MODEL
 ###########################################
+from model_training import train_and_save_model
 import joblib
-import pandas as pd
-import streamlit as st
 
-# Load the pre-trained model
-def load_model(model_path="best_catboost_model.pkl"):
-    try:
-        model = joblib.load(model_path)
-        st.write("Model loaded successfully!")
-        return model
-    except FileNotFoundError:
-        st.error("The trained model file is not found. Please train the model first.")
-        return None
+# Load the data
+df = load_data()
 
-# Example usage in your Streamlit app
-model_path = "best_catboost_model.pkl"
-model = load_model(model_path)
+# Train or load the model
+model, metadata = train_and_save_model(df)
 
-if model:
-    # Example prediction (assuming the input data format matches the model's expectation)
-    input_data = pd.DataFrame({
-        'Carat': [1.0],
-        'Cut': ['Ideal'],
-        'Color': ['E'],
-        'Clarity': ['VS1']
-    })
+if not model:
+    st.error("Model could not be loaded or trained. Please check the training script.")
+    st.stop()
 
-    # Ensure categorical columns are encoded correctly
-    for col in input_data.select_dtypes(include='object').columns:
-        input_data[col] = input_data[col].astype('category').cat.codes
+# Extract column and categorical feature metadata
+model_columns = metadata['columns']
+categorical_features = metadata['categorical_features']
 
-    st.write("Sample Prediction:", model.predict(input_data)[0])
+# Add this before prediction to ensure column order
+def preprocess_input(data, columns, categorical_features):
+    """
+    Preprocess input data to match the trained model's format.
+    """
+    for col in categorical_features:
+        if col in data:
+            data[col] = data[col].astype('category').cat.codes
+    for col in columns:
+        if col not in data:
+            data[col] = 0  # Add missing columns with default value
+    return data[columns]
+
+# Use the model for predictions
+with tab3:
+    st.header("Price Prediction Tool")
+    
+    with st.form("prediction_form"):
+        # Input fields
+        Carat = st.slider("Carat", min_value=float(df["Carat"].min()), max_value=float(df["Carat"].max()), value=1.0, step=0.01)
+        Cut = st.selectbox("Cut", options=df["Cut"].unique())
+        Color = st.selectbox("Color", options=df["Color"].unique())
+        Clarity = st.selectbox("Clarity", options=df["Clarity"].unique())
+        submitted = st.form_submit_button("Predict Price")
+    
+    if submitted:
+        # Prepare input data
+        input_data = pd.DataFrame({
+            'Carat': [Carat],
+            'Cut': [Cut],
+            'Color': [Color],
+            'Clarity': [Clarity]
+        })
+
+        # Preprocess input data
+        input_data = preprocess_input(input_data, model_columns, categorical_features)
+
+        # Predict
+        with st.spinner("Calculating price..."):
+            prediction = model.predict(input_data)[0]
+
+        # Display prediction
+        st.success(f"Estimated Price: ${prediction:,.2f}")
+
 
 import time  # Add this import at the top of your script
 
