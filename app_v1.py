@@ -113,50 +113,50 @@ with tab2:
     with col1:  # Filter options on the left
         st.subheader("Filter Options")
 
-    # Slider for price range (formatted with commas, no decimals)
-    price_range = st.slider(
-        "Select Desired Price Range",
-        min_value=int(df["Price"].min()),  # Cast to int to remove decimals
-        max_value=int(df["Price"].max()),  # Cast to int to remove decimals
-        value=(int(df["Price"].min()), int(df["Price"].max())),  # Set initial range as integers
-        format="%d"  # Display numbers without decimals
-    )
-
-    # Slider for carat range
-    mass_range = st.slider(
-        "Select Desired Carat Range",
-        min_value=float(df["Carat"].min()),
-        max_value=float(df["Carat"].max()),
-        value=(float(df["Carat"].min()), float(df["Carat"].max()))
-    )
-
-    # Multiselect options for Cut, Color, and Clarity
-    cut_options = st.multiselect(
-        "Select Diamond Cuts",
-        options=df["Cut"].unique(),
-        default=df["Cut"].unique()
-    )
-
-    color_options = st.multiselect(
-        "Select Diamond Colors",
-        options=df["Color"].unique(),
-        default=df["Color"].unique()
-    )
-
-    clarity_options = st.multiselect(
-        "Select Diamond Clarity Levels",
-        options=df["Clarity"].unique(),
-        default=df["Clarity"].unique()
-    )
-
-    # Multiselect for column selection
-    st.subheader("Customize Columns")
-    default_columns = ['Price', 'Carat', 'Cut', 'Color']  # Default columns to display
-    columns_to_display = st.multiselect(
-        "Select Columns to Display:",
-        options=df.columns.tolist(),
-        default=[col for col in default_columns if col in df.columns]  # Use default columns if available
-    )
+        # Slider for price range (formatted with commas, no decimals)
+        price_range = st.slider(
+            "Select Desired Price Range",
+            min_value=int(df["Price"].min()),  # Cast to int to remove decimals
+            max_value=int(df["Price"].max()),  # Cast to int to remove decimals
+            value=(int(df["Price"].min()), int(df["Price"].max())),  # Set initial range as integers
+            format="%d"  # Display numbers without decimals
+        )
+    
+        # Slider for carat range
+        mass_range = st.slider(
+            "Select Desired Carat Range",
+            min_value=float(df["Carat"].min()),
+            max_value=float(df["Carat"].max()),
+            value=(float(df["Carat"].min()), float(df["Carat"].max()))
+        )
+    
+        # Multiselect options for Cut, Color, and Clarity
+        cut_options = st.multiselect(
+            "Select Diamond Cuts",
+            options=df["Cut"].unique(),
+            default=df["Cut"].unique()
+        )
+    
+        color_options = st.multiselect(
+            "Select Diamond Colors",
+            options=df["Color"].unique(),
+            default=df["Color"].unique()
+        )
+    
+        clarity_options = st.multiselect(
+            "Select Diamond Clarity Levels",
+            options=df["Clarity"].unique(),
+            default=df["Clarity"].unique()
+        )
+    
+        # Multiselect for column selection
+        st.subheader("Customize Columns")
+        default_columns = ['Price', 'Carat', 'Cut', 'Color']  # Default columns to display
+        columns_to_display = st.multiselect(
+            "Select Columns to Display:",
+            options=df.columns.tolist(),
+            default=[col for col in default_columns if col in df.columns]  # Use default columns if available
+        )
 
     with col2:  # Filtered data on the right
         st.subheader("Filtered Diamonds")
@@ -308,3 +308,5 @@ with tab4:
         st.pyplot(fig)
     else:
         st.warning("No data available for the selected filters.")
+
+
