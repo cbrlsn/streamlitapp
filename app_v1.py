@@ -94,7 +94,7 @@ with tab2:
     # Create two main columns for layout
     col1, col2 = st.columns([1, 1])  # Equal-width columns for filter options and filtered data
 
-   with col1:  # Filter options on the left
+    with col1:  # Filter options on the left
     st.subheader("Filter Options")
 
     # Slider for price range (formatted with commas, no decimals)
