@@ -227,12 +227,55 @@ model.fit(X_train, y_train)
 # Make predictions
 y_pred = model.predict(X_test)
 
-# Evaluate the model
-mse = mean_squared_error(y_test, y_pred)
-rmse = mse ** 0.5
+from sklearn.model_selection import RandomizedSearchCV
+import numpy as np
 
-print(f"Mean Squared Error: {mse}")
-print(f"Root Mean Squared Error: {rmse}")
+# Define the parameter grid for tuning
+param_grid = {
+    'iterations': [500, 1000, 1500],               # Number of trees
+    'learning_rate': [0.01, 0.05, 0.1],            # Step size shrinkage
+    'depth': [4, 6, 8, 10],                        # Tree depth
+    'l2_leaf_reg': [1, 3, 5, 7],                   # L2 regularization
+    'bagging_temperature': [0, 1, 3],              # Bagging temperature
+    'random_strength': [0.5, 1, 1.5],              # Random strength
+    'border_count': [32, 64, 128],                 # Number of splits for numeric features
+}
+
+# Wrap the CatBoost model for compatibility with sklearn
+catboost_model = CatBoostRegressor(
+    cat_features=categorical_features,
+    verbose=0,  # Suppress training output
+    random_state=42
+)
+
+# Use RandomizedSearchCV for tuning
+random_search = RandomizedSearchCV(
+    estimator=catboost_model,
+    param_distributions=param_grid,
+    n_iter=20,  # Number of parameter settings to sample
+    scoring='neg_mean_squared_error',
+    cv=3,  # 3-fold cross-validation
+    verbose=2,
+    n_jobs=-1,  # Use all available cores
+    random_state=42
+)
+
+# Fit the RandomizedSearchCV to the data
+with st.spinner("Tuning the model... This may take a while!"):
+    random_search.fit(X_train, y_train)
+
+# Extract the best parameters and best model
+best_params = random_search.best_params_
+best_model = random_search.best_estimator_
+
+st.write("Best Parameters:", best_params)
+
+# Evaluate the best model on the test set
+best_model_predictions = best_model.predict(X_test)
+best_mse = mean_squared_error(y_test, best_model_predictions)
+best_rmse = np.sqrt(best_mse)
+
+st.write("Best Model RMSE on Test Data:", best_rmse)
 
 import time  # Add this import at the top of your script
 
