@@ -11,6 +11,22 @@ st.set_page_config(
     layout='wide'
 )
 
+# Apply custom CSS for dark background
+st.markdown(
+    """
+    <style>
+    body {
+        background-color: #121212;
+        color: white;
+    }
+    .sidebar .sidebar-content {
+        background-color: #333333;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 # Add the banner section
 st.markdown(
     """
