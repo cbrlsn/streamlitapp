@@ -198,84 +198,38 @@ with tab2:
 
 #### MODEL
 ###########################################
-from catboost import CatBoostRegressor, Pool
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import mean_squared_error
+import joblib
+import pandas as pd
+import streamlit as st
 
-#### Separating target and features
-X = df.drop(columns=['Price', 'Table', 'Depth'])  # Exclude unnecessary columns
-y = df['Price']  # Target variable
+# Load the pre-trained model
+def load_model(model_path="best_catboost_model.pkl"):
+    try:
+        model = joblib.load(model_path)
+        st.write("Model loaded successfully!")
+        return model
+    except FileNotFoundError:
+        st.error("The trained model file is not found. Please train the model first.")
+        return None
 
-# Encode categorical variables (if needed)
-categorical_features = X.select_dtypes(include=['object']).columns.tolist()
+# Example usage in your Streamlit app
+model_path = "best_catboost_model.pkl"
+model = load_model(model_path)
 
-# Train-test split
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+if model:
+    # Example prediction (assuming the input data format matches the model's expectation)
+    input_data = pd.DataFrame({
+        'Carat': [1.0],
+        'Cut': ['Ideal'],
+        'Color': ['E'],
+        'Clarity': ['VS1']
+    })
 
-# Define the CatBoost regressor
-model = CatBoostRegressor(
-    iterations=1000, 
-    learning_rate=0.1,
-    depth=6,
-    cat_features=categorical_features,  # Specify categorical columns
-    verbose=100  # Show progress
-)
+    # Ensure categorical columns are encoded correctly
+    for col in input_data.select_dtypes(include='object').columns:
+        input_data[col] = input_data[col].astype('category').cat.codes
 
-# Fit the model
-model.fit(X_train, y_train)
-
-# Make predictions
-y_pred = model.predict(X_test)
-
-from sklearn.model_selection import RandomizedSearchCV
-import numpy as np
-
-# Define the parameter grid for tuning
-param_grid = {
-    'iterations': [500, 1000, 1500],               # Number of trees
-    'learning_rate': [0.01, 0.05, 0.1],            # Step size shrinkage
-    'depth': [4, 6, 8, 10],                        # Tree depth
-    'l2_leaf_reg': [1, 3, 5, 7],                   # L2 regularization
-    'bagging_temperature': [0, 1, 3],              # Bagging temperature
-    'random_strength': [0.5, 1, 1.5],              # Random strength
-    'border_count': [32, 64, 128],                 # Number of splits for numeric features
-}
-
-# Wrap the CatBoost model for compatibility with sklearn
-catboost_model = CatBoostRegressor(
-    cat_features=categorical_features,
-    verbose=0,  # Suppress training output
-    random_state=42
-)
-
-# Use RandomizedSearchCV for tuning
-random_search = RandomizedSearchCV(
-    estimator=catboost_model,
-    param_distributions=param_grid,
-    n_iter=20,  # Number of parameter settings to sample
-    scoring='neg_mean_squared_error',
-    cv=3,  # 3-fold cross-validation
-    verbose=2,
-    n_jobs=-1,  # Use all available cores
-    random_state=42
-)
-
-# Fit the RandomizedSearchCV to the data
-with st.spinner("Tuning the model... This may take a while!"):
-    random_search.fit(X_train, y_train)
-
-# Extract the best parameters and best model
-best_params = random_search.best_params_
-best_model = random_search.best_estimator_
-
-st.write("Best Parameters:", best_params)
-
-# Evaluate the best model on the test set
-best_model_predictions = best_model.predict(X_test)
-best_mse = mean_squared_error(y_test, best_model_predictions)
-best_rmse = np.sqrt(best_mse)
-
-st.write("Best Model RMSE on Test Data:", best_rmse)
+    st.write("Sample Prediction:", model.predict(input_data)[0])
 
 import time  # Add this import at the top of your script
 
