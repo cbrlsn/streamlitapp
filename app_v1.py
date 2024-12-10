@@ -198,24 +198,70 @@ with tab2:
 
 #### MODEL
 ###########################################
-from model_training import train_and_save_model
-import joblib
+from catboost import CatBoostRegressor
+from sklearn.model_selection import train_test_split, RandomizedSearchCV
+from sklearn.metrics import mean_squared_error
+import pandas as pd
+import numpy as np
 
-# Load the data
-df = load_data()
+@st.cache_resource()
+def train_model(data):
+    """
+    Train and tune a CatBoost model, returning the model and associated metadata.
+    """
+    # Separating target and features
+    X = data.drop(columns=['Price', 'Table', 'Depth'])  # Exclude unnecessary columns
+    y = data['Price']  # Target variable
+
+    # Encode categorical variables
+    categorical_features = X.select_dtypes(include=['object']).columns.tolist()
+
+    # Train-test split
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+
+    # Define the CatBoost regressor
+    model = CatBoostRegressor(cat_features=categorical_features, random_state=42, verbose=0)
+
+    # Define the parameter grid for tuning
+    param_grid = {
+        'iterations': [500, 1000],
+        'learning_rate': [0.01, 0.05],
+        'depth': [4, 6],
+        'l2_leaf_reg': [1, 3],
+        'bagging_temperature': [0, 1],
+    }
+
+    # Use RandomizedSearchCV for tuning
+    random_search = RandomizedSearchCV(
+        estimator=model,
+        param_distributions=param_grid,
+        n_iter=5,
+        scoring='neg_mean_squared_error',
+        cv=3,
+        verbose=1,
+        n_jobs=-1,
+        random_state=42
+    )
+
+    with st.spinner("Training and tuning the model... This may take a while!"):
+        random_search.fit(X_train, y_train)
+
+    # Get the best model and its parameters
+    best_model = random_search.best_estimator_
+    best_params = random_search.best_params_
+    st.write("Best Parameters:", best_params)
+
+    # Evaluate the best model on the test set
+    y_pred = best_model.predict(X_test)
+    rmse = mean_squared_error(y_test, y_pred, squared=False)
+    st.write(f"Model trained. RMSE: {rmse:.2f}")
+
+    return best_model, rmse, categorical_features, list(X.columns)
 
 # Train or load the model
-model, metadata = train_and_save_model(df)
+model, rmse, categorical_features, model_columns = train_model(df)
 
-if not model:
-    st.error("Model could not be loaded or trained. Please check the training script.")
-    st.stop()
-
-# Extract column and categorical feature metadata
-model_columns = metadata['columns']
-categorical_features = metadata['categorical_features']
-
-# Add this before prediction to ensure column order
+# Prediction Preprocessing Function
 def preprocess_input(data, columns, categorical_features):
     """
     Preprocess input data to match the trained model's format.
@@ -227,6 +273,7 @@ def preprocess_input(data, columns, categorical_features):
         if col not in data:
             data[col] = 0  # Add missing columns with default value
     return data[columns]
+
 
 # Use the model for predictions
 with tab3:
